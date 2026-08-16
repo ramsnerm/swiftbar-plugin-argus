@@ -20,11 +20,13 @@ One macOS menu bar icon that monitors and controls local/remote services in one 
 
 Each service gets its own submenu: status (via SF Symbol shape, not color - matches native macOS style), Start/Stop/Restart/Activate/Deactivate where applicable, an Update button when a newer version is actually available, and read-only info (version, loaded models, hosted MCP servers, ...).
 
+MCP Proxy's submenu also has a "Claude Verbindung" entry per hosted MCP server, showing whether it's currently registered in Claude Code's user-scope config and letting you connect/disconnect it with one click (`claude mcp add`/`remove -s user`) - without running `claude mcp list`, which does a live health check per server and takes a few seconds.
+
 ### This is a personal, opinionated setup
 
 This repo is published as a reference/starting point, not a plug-and-play install for someone else's machine. The services monitored, and most paths/ports/URLs used to reach them, are specific to how the author runs these tools locally. To adapt this to your own setup:
 
-- Personal-but-not-secret values (your dev path, ComfyUI's launchd label, Forgejo/Gitea and Home Assistant hostnames) live in `lib/config.local.sh`, which is gitignored and never committed. Copy `lib/config.example.sh` to `lib/config.local.sh` and fill in your own values - see that file for what each one means. Without it, Argus still runs off the tracked `config.example.sh` placeholders, just with a non-functional Gitea/HA entry and no "Argus Version" footer link.
+- Personal-but-not-secret values (your dev path, ComfyUI's launchd label, Forgejo/Gitea and Home Assistant hostnames, the `claude` CLI path) live in `lib/config.local.sh`, which is gitignored and never committed. Copy `lib/config.example.sh` to `lib/config.local.sh` and fill in your own values - see that file for what each one means. Without it, Argus still runs off the tracked `config.example.sh` placeholders, just with a non-functional Gitea/HA entry, no "Claude Verbindung" connect/disconnect actions, and no "Argus Version" footer link.
 - Genuine secrets - anything where knowing the value alone grants access, not just an address - go in the macOS Keychain instead, see [Credentials](#credentials). This currently covers the Paste bearer token, the Open WebUI API key, and the Home Assistant webhook URL (a webhook's ID *is* its access credential, unlike a plain hostname).
 - Beyond that, each `services/*.sh` still hardcodes things like ports and install paths for that one service (e.g. ComfyUI's/mcp-proxy's install location) - edit these directly, or delete/replace the services you don't run yourself. See [Adding a new service](#adding-a-new-service) below for the shape a service file follows.
 

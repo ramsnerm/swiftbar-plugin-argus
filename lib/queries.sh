@@ -4,6 +4,23 @@
 # Requires lib/json.sh (json_field) and STATE_DIR (lib/core.sh) to
 # already be sourced.
 
+# Names of MCP servers currently registered in Claude Code's user-scope
+# config (~/.claude.json top-level "mcpServers"), one per line. Reads
+# the config file directly rather than "claude mcp list" - that CLI
+# command does a live health check per server (several seconds), this
+# is a plain local JSON read.
+claude_mcp_user_servers() {
+    python3 -c "
+import json
+try:
+    d = json.load(open('$HOME/.claude.json'))
+    for k in (d.get('mcpServers') or {}).keys():
+        print(k)
+except Exception:
+    pass
+" 2>/dev/null
+}
+
 # Fetch launchd info for one job label. Sets STATE, PID, EXITCODE, and
 # LOADED (1 if the job is registered with launchd at all, 0 if not -
 # "not loaded" happens after a deliberate "Deactivate", see

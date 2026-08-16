@@ -211,6 +211,8 @@ fi
 # itself as the system finishes booting.
 EXPECTED_HELPERS=(
     argus_open_devfolder.sh
+    claude_mcp_connect.sh
+    claude_mcp_disconnect.sh
     comfyui_free.sh
     comfyui_update.sh
     llama_fim_update.sh

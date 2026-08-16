@@ -27,3 +27,8 @@ CFG_FORGEJO_UI="https://your-forgejo-host/"
 # entire access credential, so that one lives in the Keychain instead
 # (service name "swiftbar-ha-webhook-url", see README.md > Credentials).
 CFG_HA_UI="https://your-home-assistant-host/"
+
+# Path to the "claude" CLI binary, used by the MCP Proxy submenu's
+# "Claude Verbindung" connect/disconnect buttons (claude mcp add/remove
+# -s user). Find yours with `which claude`.
+CFG_CLAUDE_BIN="$HOME/.local/bin/claude"

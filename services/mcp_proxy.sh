@@ -72,6 +72,23 @@ for k,v in (d.get('mcpServers') or {}).items():
     if [ -n "$proxy_latest" ] && [ "$proxy_latest" != "$proxy_version" ]; then
         add "--$(printf "$STR_COMMON_UPDATE_TO" "v$proxy_latest") | bash=$SWIFTBAR_DIR/helpers/mcp_proxy_update.sh terminal=false refresh=true"
     fi
+    if [ -n "$names" ]; then
+        local claude_connected; claude_connected=$(claude_mcp_user_servers)
+        local claude_connected_count=0
+        while IFS= read -r n; do
+            [ -z "$n" ] && continue
+            printf '%s\n' "$claude_connected" | grep -qxF "$n" && claude_connected_count=$((claude_connected_count+1))
+        done <<< "$names"
+        add "--$(printf "$STR_MCP_CLAUDE_CONNECTION" "$claude_connected_count")"
+        while IFS= read -r n; do
+            [ -z "$n" ] && continue
+            if printf '%s\n' "$claude_connected" | grep -qxF "$n"; then
+                add "----$n $STR_MCP_CLAUDE_DISCONNECT_SUFFIX | bash=$SWIFTBAR_DIR/helpers/claude_mcp_disconnect.sh param1=$n terminal=false refresh=true"
+            else
+                add "----$n $STR_MCP_CLAUDE_CONNECT_SUFFIX | bash=$SWIFTBAR_DIR/helpers/claude_mcp_connect.sh param1=$n param2=$port terminal=false refresh=true"
+            fi
+        done <<< "$names"
+    fi
 
     # --- Separator + info (hosted servers listed flat, no extra parent item) ---
     add "$SEP"

@@ -47,6 +47,9 @@ STR_MCP_LABEL_COUNT="MCP Proxy: %s/%s"
 STR_MCP_CONFIGURE="MCPs konfigurieren"
 STR_MCP_NO_SERVERS="keine MCP-Server in server.json"
 STR_MCP_NOT_CHECKABLE="nicht prüfbar (Proxy aus)"
+STR_MCP_CLAUDE_CONNECTION="Claude Verbindung (%s)"
+STR_MCP_CLAUDE_CONNECT_SUFFIX="(verbinden)"
+STR_MCP_CLAUDE_DISCONNECT_SUFFIX="(trennen)"
 
 # --- ComfyUI ---
 STR_COMFY_LABEL="ComfyUI"
