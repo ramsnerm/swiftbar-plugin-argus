@@ -34,6 +34,8 @@ This repo is published as a reference/starting point, not a plug-and-play instal
 
 Development happens on `main` in a private repository; what you're looking at here is `public` - a separate, orphan branch (no shared git history with `main`) that gets snapshotted from `main`'s current state automatically on every push. That split exists because `main`'s early history briefly had personal paths/hostnames inline, before the `lib/config.local.sh`/Keychain separation described above - `public` only ever contains clean, current snapshots, never that history. If you're reading this on GitHub, you're on a mirror of `public`; there's no `main` branch here.
 
+The sync itself runs as a Forgejo Actions workflow (`.forgejo/workflows/sync-public.yml`, private-repo-only - not part of `public`/this mirror) triggered on every push to `main`, followed by a Forgejo push mirror that forwards `public` to GitHub. Neither step needs a manual trigger.
+
 ### Requirements
 
 - macOS
@@ -112,6 +114,7 @@ security add-generic-password -a "$USER" -s "swiftbar-ha-webhook-url" -w "<url>"
 | `lib/config.example.sh` | Tracked template for personal-but-not-secret config (dev path, launchd labels, service hostnames) - see [Configuration](#configuration). |
 | `lib/config.local.sh` | Your own copy of the above, gitignored, never committed. |
 | `helpers/*.sh` | Standalone scripts invoked by SwiftBar's `bash=` click actions - a menu item can't run inline shell, only call an executable file. |
+| `.forgejo/workflows/sync-public.yml` | Private-repo-only automation (see [About this branch](#about-this-branch)) - not part of `public`/this mirror. |
 
 ## Adding a new service
 
