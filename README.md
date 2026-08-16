@@ -28,6 +28,10 @@ This repo is published as a reference/starting point, not a plug-and-play instal
 - Genuine secrets - anything where knowing the value alone grants access, not just an address - go in the macOS Keychain instead, see [Credentials](#credentials). This currently covers the Paste bearer token, the Open WebUI API key, and the Home Assistant webhook URL (a webhook's ID *is* its access credential, unlike a plain hostname).
 - Beyond that, each `services/*.sh` still hardcodes things like ports and install paths for that one service (e.g. ComfyUI's/mcp-proxy's install location) - edit these directly, or delete/replace the services you don't run yourself. See [Adding a new service](#adding-a-new-service) below for the shape a service file follows.
 
+### About this branch
+
+Development happens on `main` in a private repository; what you're looking at here is `public` - a separate, orphan branch (no shared git history with `main`) that gets snapshotted from `main`'s current state automatically on every push. That split exists because `main`'s early history briefly had personal paths/hostnames inline, before the `lib/config.local.sh`/Keychain separation described above - `public` only ever contains clean, current snapshots, never that history. If you're reading this on GitHub, you're on a mirror of `public`; there's no `main` branch here.
+
 ### Requirements
 
 - macOS
