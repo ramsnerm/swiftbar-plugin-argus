@@ -1,0 +1,49 @@
+name: Sync public branch
+
+on:
+  push:
+    branches:
+      - main
+
+# contents:write is needed to push the resulting sync commit back to
+# this repo (the public branch, which the Push Mirror then forwards to
+# the public GitHub copy).
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    # Matches this instance's registered runner labels (docker, linux) -
+    # "ubuntu-latest" isn't one of them, which is why the first run got
+    # stuck in "waiting" forever.
+    runs-on: linux
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Snapshot main onto public
+        run: |
+          git config user.name "forgejo-actions"
+          git config user.email "actions@noreply.local"
+
+          # Same logic as scripts/sync-public.sh - kept in sync with it
+          # manually, since this workflow can't easily source a script
+          # from a branch it hasn't checked out. public is an orphan
+          # branch (no shared history with main - main's early commits
+          # briefly had personal paths/hostnames/a webhook ID inline,
+          # before the config.local.sh/Keychain split), so this replaces
+          # public's tree wholesale rather than merging.
+          git checkout public
+          git rm -rq --ignore-unmatch -- .
+          git checkout main -- .
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "public already up to date with main - nothing to sync."
+            exit 0
+          fi
+
+          MAIN_SHA=$(git rev-parse --short main)
+          git commit -m "Sync to main@$MAIN_SHA"
+          git push origin public
