@@ -37,14 +37,19 @@ jobs:
           git config user.name "Martin Ramsner"
           git config user.email "martin@ramsner.me"
 
-          # Same logic as scripts/sync-public.sh - kept in sync with it
-          # manually, since this workflow can't easily source a script
-          # from a branch it hasn't checked out. public is an orphan
-          # branch (no shared history with main - main's early commits
-          # briefly had personal paths/hostnames/a webhook ID inline,
-          # before the config.local.sh/Keychain split), so this replaces
-          # public's tree wholesale rather than merging.
+          # public is an orphan branch (no shared history with main -
+          # main's early commits briefly had personal paths/hostnames/a
+          # webhook ID inline, before the config.local.sh/Keychain
+          # split), so this replaces public's tree wholesale rather than
+          # merging.
           git checkout public
+
+          # Carry over the real commit message(s) from main instead of a
+          # generic "Sync to main@X" - read what main SHA the previous
+          # sync commit recorded (its "Synced-Main:" trailer) so this
+          # sync can report exactly what changed since then.
+          LAST_SYNCED_SHA=$(git log -1 --format=%B | sed -n 's/^Synced-Main: //p' | head -1)
+
           git rm -rq --ignore-unmatch -- .
           git checkout main -- .
           git add -A
@@ -55,5 +60,20 @@ jobs:
           fi
 
           MAIN_SHA=$(git rev-parse --short main)
-          git commit -m "Sync to main@$MAIN_SHA"
+
+          COMMIT_COUNT=1
+          if [ -n "$LAST_SYNCED_SHA" ] && git cat-file -e "$LAST_SYNCED_SHA" 2>/dev/null; then
+              RANGE="$LAST_SYNCED_SHA..main"
+              COMMIT_COUNT=$(git rev-list --count "$RANGE")
+          fi
+
+          if [ "$COMMIT_COUNT" -le 1 ]; then
+              SUBJECT=$(git log -1 --format=%s main)
+              git commit -m "$SUBJECT" -m "Synced-Main: $MAIN_SHA"
+          else
+              SUBJECT="Sync $COMMIT_COUNT commits from main"
+              BODY=$(git log --format='- %s' "$RANGE")
+              git commit -m "$SUBJECT" -m "$BODY" -m "Synced-Main: $MAIN_SHA"
+          fi
+
           git push origin public
