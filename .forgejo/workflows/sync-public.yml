@@ -24,8 +24,18 @@ jobs:
 
       - name: Snapshot main onto public
         run: |
-          git config user.name "forgejo-actions"
-          git config user.email "actions@noreply.local"
+          # Commit under the actual author's identity, not a bot one -
+          # the sync content is theirs, this workflow just mechanically
+          # carries it over, and a bot identity meant GitHub couldn't
+          # attribute these commits to anyone (live-observed: distinct
+          # from the manually-pushed commits, which showed up fine).
+          # ${{ github.actor }} / pusher-email context fields aren't
+          # reliably populated on Forgejo Actions, so this is hardcoded
+          # rather than templated - matches the same name already
+          # public in LICENSE and every other commit in this repo, so
+          # nothing new is exposed by it being here too.
+          git config user.name "Martin Ramsner"
+          git config user.email "martin@ramsner.me"
 
           # Same logic as scripts/sync-public.sh - kept in sync with it
           # manually, since this workflow can't easily source a script
