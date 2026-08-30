@@ -72,6 +72,9 @@ STR_HA_LABEL="Home Assistant MCP"
 # --- Paste MCP ---
 STR_PASTE_LABEL="Paste MCP"
 
+# --- Search Mestro MCP ---
+STR_SEARCHMESTRO_LABEL="Search Mestro"
+
 # --- Open WebUI ---
 STR_OWUI_LABEL="Open WebUI"
 STR_OWUI_LLAMA_VERSION="Version integrated llama.cpp: %s"

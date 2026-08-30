@@ -16,7 +16,7 @@ Every decision in Argus - what to monitor, how each menu should behave, which ed
 
 ### Overview
 
-One macOS menu bar icon that monitors and controls local/remote services in one place. At the moment a local `mcp-proxy` (hosts MCP servers over HTTP/SSE), ComfyUI, a local llama.cpp server used for code fill-in-the-middle completion, a remote Forgejo/Gitea MCP server, a remote Home Assistant MCP webhook, and two local macOS apps (Paste, Open WebUI) that each expose their own MCP server are implemented.
+One macOS menu bar icon that monitors and controls local/remote services in one place. At the moment a local `mcp-proxy` (hosts MCP servers over HTTP/SSE), ComfyUI, a local llama.cpp server used for code fill-in-the-middle completion, a remote Forgejo/Gitea MCP server, a remote Home Assistant MCP webhook, a remote Search Mestro MCP server (docs.runmaestro.ai), and two local macOS apps (Paste, Open WebUI) that each expose their own MCP server are implemented.
 
 Each service gets its own submenu: status (via SF Symbol shape, not color - matches native macOS style), Start/Stop/Restart/Activate/Deactivate where applicable, an Update button when a newer version is actually available, and read-only info (version, loaded models, hosted MCP servers, ...).
 
