@@ -1,5 +1,5 @@
 #!/bin/bash
-# =================================================== Search Mestro MCP ====
+# ================================================== Search Maestro MCP ====
 # Remote, hosted MCP server (docs.runmaestro.ai) that provides search/
 # retrieval over the Maestro documentation site. Public endpoint, no
 # bearer token, no Start/Stop control from here - same shape as ha_mcp.sh.

@@ -19,12 +19,12 @@
 # line syntax is "Title | param1=value param2=value ...".
 #
 # WHAT IT MONITORS
-# Eight services this user runs, in this order: a remote Search Mestro MCP
-# server (docs.runmaestro.ai), ComfyUI (local image generation), a remote
-# Forgejo/Gitea MCP server, a remote Home Assistant MCP webhook, a local
-# llama.cpp server used for code fill-in-the-middle completion, a local
-# mcp-proxy (hosts MCP servers over HTTP/SSE), and two local macOS apps
-# (Open WebUI, Paste) each exposing their own MCP server.
+# Eight services this user runs, in this order: ComfyUI (local image
+# generation), a remote Forgejo/Gitea MCP server, a remote Home Assistant
+# MCP webhook, a local llama.cpp server used for code fill-in-the-middle
+# completion, a local mcp-proxy (hosts MCP servers over HTTP/SSE), two
+# local macOS apps (Open WebUI, Paste) each exposing their own MCP server,
+# and a remote Search Maestro MCP server (docs.runmaestro.ai).
 #
 # THIS FILE is only the orchestrator: source the shared libraries and one
 # file per service, call each service in order, then print the header/
@@ -97,7 +97,6 @@ source "$SWIFTBAR_DIR/lib/json.sh"
 source "$SWIFTBAR_DIR/lib/queries.sh"
 
 # One file per service - each defines exactly one service_<name> function.
-source "$SWIFTBAR_DIR/services/search_mestro_mcp.sh"
 source "$SWIFTBAR_DIR/services/comfyui.sh"
 source "$SWIFTBAR_DIR/services/gitea_mcp.sh"
 source "$SWIFTBAR_DIR/services/ha_mcp.sh"
@@ -105,11 +104,8 @@ source "$SWIFTBAR_DIR/services/llama_fim.sh"
 source "$SWIFTBAR_DIR/services/mcp_proxy.sh"
 source "$SWIFTBAR_DIR/services/openwebui.sh"
 source "$SWIFTBAR_DIR/services/paste_mcp.sh"
+source "$SWIFTBAR_DIR/services/search_mestro_mcp.sh"
 
-# Search Mestro is called first deliberately, ahead of alphabetical
-# order (its display name would otherwise sort after Paste MCP) - not
-# an oversight, don't "fix" it back to alphabetical.
-service_search_mestro_mcp
 service_comfyui
 service_gitea_mcp
 service_ha_mcp
@@ -117,6 +113,7 @@ service_llama_fim
 service_mcp_proxy
 service_openwebui
 service_paste_mcp
+service_search_mestro_mcp
 
 # ================================================================ Header ====
 # Priority for the aggregate header icon: a genuine outage (error symbol)

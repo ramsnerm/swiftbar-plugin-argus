@@ -72,8 +72,8 @@ STR_HA_LABEL="Home Assistant MCP"
 # --- Paste MCP ---
 STR_PASTE_LABEL="Paste MCP"
 
-# --- Search Mestro MCP ---
-STR_SEARCHMESTRO_LABEL="Search Mestro"
+# --- Search Maestro MCP ---
+STR_SEARCHMESTRO_LABEL="Search Maestro MCP"
 
 # --- Open WebUI ---
 STR_OWUI_LABEL="Open WebUI"
