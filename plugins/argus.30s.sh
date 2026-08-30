@@ -160,7 +160,7 @@ done
 # minutes of system uptime) nothing is reported yet, even if something
 # currently looks like an error. After that the normal logic applies.
 BOOT_GRACE_SECONDS=300
-boot_epoch=$(sysctl -n kern.boottime 2>/dev/null | sed -E 's/.*sec = ([0-9]+).*/\1/')
+boot_epoch=$(sysctl -n kern.boottime 2>/dev/null | sed -E 's/^\{ sec = ([0-9]+).*/\1/')
 now_epoch=$(date +%s)
 in_boot_grace=0
 if [ -n "$boot_epoch" ]; then
